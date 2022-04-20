@@ -5,12 +5,8 @@ import pandas as pd
 
 wordArray = pd.read_csv("/Users/andrew/Desktop/python/Wordle/Wordle.csv")
 wordList = wordArray["validWordleAnswer"].tolist()
-# wordArray = wordArray[wordArray["validWordleAnswer"] != ]
-
-# wordList = wordArray.tolist()
-# print(wordList)
-
-print(wordArray)
+wordList = [w for w in wordList if w != "nan"]
+print(wordList)
 
 actualWord = "which"
 # the word the computer guesses first
