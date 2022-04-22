@@ -104,7 +104,7 @@ else:
 # She was Karving her initials on the møøse with the sharpened end of an interspace tøøthbrush
 # given her by Svenge - her brother-in-law - an Oslo dentist
 # and star of many Norwegian møvies: "The Høt Hands of an Oslo Dentist",
-# "Fillings of Passion", "The Huge Mølars of Horst Nordfink"...
+# "Fillings of Preston", "The Huge Mølars of Horst Nordfink"...
 
 print(greenLetters) #swag letters
 print(yellowLetters) #slightly less swag letters
