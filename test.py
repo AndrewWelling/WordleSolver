@@ -23,6 +23,26 @@ secondWord = "yolks" #anticoagulant
 # the computer's guesses
 currGuess = startingWord
 
+letterScores = {"e": 26, "a": 25, "r": 24, "i": 23, "o": 22, "t": 21, "n": 20, "s": 19, "l": 18, "c": 17,
+                "u": 16, "d": 15, "p": 14, "m": 13, "h": 12, "g": 11, "b": 10, "f": 9, "y": 8, "w": 7,
+                "k": 6, "v": 5, "x": 4, "z": 3, "j": 2, "q": 1}
+
+# https://www3.nd.edu/~busiforc/handouts/cryptography/letterfrequencies.html
+# E	11.1607%56.88	M	3.0129%	15.36
+# A	8.4966%	43.31	H	3.0034%	15.31
+# R	7.5809%	38.64	G	2.4705%	12.59
+# I	7.5448%	38.45	B	2.0720%	10.56
+# O	7.1635%	36.51	F	1.8121%	9.24
+# T	6.9509%	35.43	Y	1.7779%	9.06
+# N	6.6544%	33.92	W	1.2899%	6.57
+# S	5.7351%	29.23	K	1.1016%	5.61
+# L	5.4893%	27.98	V	1.0074%	5.13
+# C	4.5388%	23.13	X	0.2902%	1.48
+# U	3.6308%	18.51	Z	0.2722%	1.39
+# D	3.3844%	17.25	J	0.1965%	1.00
+# P	3.1671%	16.14	Q	0.1962%	(1)
+
+
 # these track the correct letters
 # Mynd you, møøse bites Kan be pretti nasti...
 # green
@@ -67,31 +87,70 @@ for i in range(len(currGuess)):
 # so that's how you can prioritize møøse
 
 # try the list in a NEW PROGRAM to make it work because there are too many variables here
-if (len(yellowLetters) != 0 and len(greenLetters) != 0):
-    for w in range(len(wordList)-1, 0, -1):
+
+# FIX THE REMOVE WORD THING YEAH
+if len(yellowLetters) != 0 and len(greenLetters) != 0:
+    # iterates through word list backwards
+    # starts at 2300
+    for w in reversed(range(len(wordList))):
+        # the iterating index? w seems to represent a number instead of a word which is wonky
+        print("index of iteration?", w) # surry
+        print("length of reversed wordList: ", len(wordList))
         currWord = wordList[w]
-        for i in range(len(greenLetters)):
-            print(str(wordList[w]))
-            # this if statement is designed to remove the irrelevant words that won't help us get closer to the actual word if they are guessed so they get yeeted out of the møøse
-            # if the current word's current letter is not one of the green letters (in the right space and in the word)
-            # and if the current green letter being checked is not blank
-            # OR (all checks required) —
-            # the current letter of the current word is in the word but not in the right spot (yellow)
-            # OR
-            # the current letter of the current word is not in the word
-                # if there is a word in the wordlist that has a word that's not in the actual word its not worth guessing
-            # if wordList[w] == "nan":
-            #     del wordList[w]
-            if (currWord[i] not in yellowLetters):
-                print(wordList[w])
-                del wordList[w]
+        count = 0
+        # count checks if the word has any yellow letters (has a word that the right word also has)
+        # if it does increment by 1
+        # if the word has no yellow letters it removes it (no need to try and guess--it wont help us)
+        # iterate through the yellowLetters list of words and check em all
+        #yellow letters has to have letters to work
+        if len(yellowLetters) != 0:
+            for yl in yellowLetters:
+            # the loop has found a letter that is both in yellow letters and in the current word being guessed (currWord)
+                if yl in currWord:
+                    count += 1
+            if count == 0:
+                print("deleting word using yellow:", wordList[w])
+                wordList.pop(w)
+                # del wordList[w]
+                w -= 1
 
-            #             if (currWord[i] != greenLetters[i] and greenLetters[i] != '') or (currWord[i] not in yellowLetters) or (currWord[i] in lettersNotIn):
-            #                 print(wordList[w])
-            #                 del wordList[w]
+        #green letters has to have letters for this to run
+        # this awful if statement is andrew's doing
 
-                # Only if we comment out the if statement
-                # but I don't understand why the if statement breaks it
+        #not working this bad
+        #this doesnt work
+        #need to fix this
+        if greenLetters[0] != '_' and greenLetters[1] != '_' and greenLetters[2] != '_' and greenLetters[3] != '_' and greenLetters[4] != '_':
+        
+            for i in range(len(currWord)):
+            # currWord[i] represents the current letter in the currWord being compared against the contents of our other lovely lists
+                if (currWord[i] != greenLetters[i] and greenLetters[i] != '_') or (currWord[i] in lettersNotIn):
+                    print("deleting word using green and notin:", wordList[w])
+                    # pop removes the item at the specified index w from the list
+                    # perhaps, aPOPtosis is the inspiration
+                    wordList.pop(w)
+                    # del wordList[w]
+                    w -= 1
+
+        # by now not swag words should be removed (hopefully)
+
+    # this will generate the next guess based on how common the letters in a word are
+    # in order to hopefully minimize the number of guesses the computer needs to get the word?
+
+    highestScore = 0
+    highestWord = ""
+    for word in wordList:
+        wordScore = 0
+        for letter in word:
+            wordScore += letterScores[letter]
+        print("score:", wordScore, "for word: ", word)
+        if wordScore > highestScore:
+            highestScore = wordScore
+            highestWord = word
+
+    currGuess = highestWord
+    print("next guess:", currGuess)
+    print("word has a score:", highestScore)
 
     #make guess
 else:
